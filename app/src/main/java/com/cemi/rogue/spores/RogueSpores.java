@@ -1,6 +1,5 @@
 package com.cemi.rogue.spores;
 
-import org.joml.Vector2d;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
@@ -18,8 +17,6 @@ import com.cemi.engine.render.Shader;
 import com.cemi.rogue.spores.render.MeshRenderer;
 
 public class RogueSpores extends Engine {
-
-    // private static Vector2d lastDeltaMouse = new Vector2d();
 
     public static void main(String[] args) {
         Settings.setTitle("Rogue Spores");
@@ -56,13 +53,8 @@ public class RogueSpores extends Engine {
                 if (Input.isKeyPressed(GLFW.GLFW_KEY_Q)) {
                     getLookDirection().rotateAxis((float) Time.getDeltaTime(), 0.f, 1.f, 0.f);
                 }
-                // if (Math.abs(Input.getDeltaMouse().x - lastDeltaMouse.x) > 0.001) {
-                //     getLookDirection().rotateAxis((float) -Input.getDeltaMouse().x * 0.01f, 0.f, 1.f, 0.f);
-                // }
-                // if (Input.getDeltaMouse().y != lastDeltaMouse.y) {
-                //     //getLookDirection().rotateAxis((float) -Input.getDeltaMouse().y * 0.01f, 0.f, 1.f, 0.f);
-                // }
-                // lastDeltaMouse = Input.getDeltaMouse();
+                getLookDirection().rotateAxis((float) Time.getDeltaTime() * (float) Input.getDeltaMouse().x, 0.f, 1.f,
+                        0.f);
             }
         });
 

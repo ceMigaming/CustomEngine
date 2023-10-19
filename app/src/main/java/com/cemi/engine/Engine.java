@@ -128,6 +128,7 @@ public class Engine {
             GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
 
             Time.update();
+            Input.update();
 
             for (GameObject gameObject : gameObjects) {
                 if (gameObject.isActive()) {

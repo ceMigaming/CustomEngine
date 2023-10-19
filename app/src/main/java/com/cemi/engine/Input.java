@@ -10,7 +10,6 @@ import org.lwjgl.glfw.GLFWScrollCallback;
 
 public class Input {
     static Vector2d deltaMouse = new Vector2d(0, 0);
-    static Vector2d lastDeltaMouse = new Vector2d(0, 0);
     static Vector2d currentMousePos = new Vector2d(0, 0);
     static Vector2d lastMousePos = new Vector2d(0, 0);
     static Vector2d deltaScroll = new Vector2d(0, 0);
@@ -24,14 +23,8 @@ public class Input {
         GLFWCursorPosCallback cursorPosCallback = new GLFWCursorPosCallback() {
             @Override
             public void invoke(long window, double xPos, double yPos) {
-                lastDeltaMouse.x = deltaScroll.x;
-                lastDeltaMouse.y = deltaScroll.y;
                 currentMousePos.x = xPos;
                 currentMousePos.y = yPos;
-                deltaMouse.x = currentMousePos.x - lastMousePos.x;
-                deltaMouse.y = currentMousePos.y - lastMousePos.y;
-                lastMousePos.x = xPos;
-                lastMousePos.y = yPos;
             }
         };
         GLFW.glfwSetCursorPosCallback(window, cursorPosCallback);
@@ -63,16 +56,14 @@ public class Input {
     }
 
     public static void update() {
-        
+        deltaMouse.x = lastMousePos.x - currentMousePos.x;
+        deltaMouse.y = lastMousePos.y - currentMousePos.y;
+        lastMousePos.x = currentMousePos.x;
+        lastMousePos.y = currentMousePos.y;
     }
 
     public static Vector2d getDeltaMouse() {
-        System.out.println(deltaMouse);
-        System.out.println(lastDeltaMouse);
-        if(deltaMouse.x == lastDeltaMouse.x && deltaMouse.y == lastDeltaMouse.y)
-            return new Vector2d(0, 0);
-        else
-            return deltaMouse;
+        return deltaMouse;
     }
 
     public static Vector2d getDeltaScroll() {
@@ -99,7 +90,7 @@ public class Input {
     }
 
     public static boolean isKeyUp(int key) {
-        if(isKeyUpMap.getOrDefault(key, false) == true) {
+        if (isKeyUpMap.getOrDefault(key, false) == true) {
             if (keyMap.getOrDefault(key, GLFW.GLFW_RELEASE) == GLFW.GLFW_RELEASE) {
                 isKeyUpMap.put(key, false);
                 return true;

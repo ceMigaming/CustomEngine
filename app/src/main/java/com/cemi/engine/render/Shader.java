@@ -9,6 +9,7 @@ public class Shader {
     private final String path;
 
     public static final Shader DEFAULT = new Shader("builtin/default");
+    public static final Shader UI_SHADER = new Shader("builtin/uiShader");
 
     public Shader(String path) {
         this.path = path;

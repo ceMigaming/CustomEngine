@@ -11,10 +11,11 @@ import com.cemi.engine.Time;
 import com.cemi.engine.Transform;
 import com.cemi.engine.render.Camera;
 import com.cemi.engine.render.GLStateManager;
+import com.cemi.engine.render.MeshRenderer;
 import com.cemi.engine.render.Primitives;
 import com.cemi.engine.render.Renderer;
 import com.cemi.engine.render.Shader;
-import com.cemi.rogue.spores.render.MeshRenderer;
+import com.cemi.engine.render.UIRenderer;
 
 public class RogueSpores extends Engine {
 
@@ -27,8 +28,7 @@ public class RogueSpores extends Engine {
             public void update() {
                 super.update();
                 if (Input.isKeyPressed(GLFW.GLFW_KEY_S)) {
-                    getTransform().translate(getLookDirection().rotateY((float) Math.PI, new Vector3f())
-                            .mul((float) Time.getDeltaTime(), new Vector3f()));
+                    getTransform().translate(getLookDirection().mul(-(float) Time.getDeltaTime(), new Vector3f()));
                 }
                 if (Input.isKeyPressed(GLFW.GLFW_KEY_W)) {
                     getTransform().translate(getLookDirection().mul((float) Time.getDeltaTime(), new Vector3f()));
@@ -53,8 +53,12 @@ public class RogueSpores extends Engine {
                 if (Input.isKeyPressed(GLFW.GLFW_KEY_Q)) {
                     getLookDirection().rotateAxis((float) Time.getDeltaTime(), 0.f, 1.f, 0.f);
                 }
-                getLookDirection().rotateAxis((float) Time.getDeltaTime() * (float) Input.getDeltaMouse().x, 0.f, 1.f,
-                        0.f);
+                // getLookDirection().rotateAxis((float) Time.getDeltaTime() * (float) Input.getDeltaMouse().x, 0.f, 1.f,
+                //         0.f);
+                float deltaY = (float) Time.getDeltaTime() * (float) -Input.getDeltaMouse().y;
+                float angle = (float) Math.atan2(getLookDirection().z, getLookDirection().x);
+                // getLookDirection().rotateX((float) Math.sin(angle) * deltaY);
+                // getLookDirection().rotateZ((float) Math.cos(angle) * -deltaY);
             }
         });
 
@@ -73,6 +77,24 @@ public class RogueSpores extends Engine {
                 shader.unbind();
             }
         };
+
+        RogueSpores.addGameObject(new GameObject("ui", new UIRenderer()) {
+
+            @Override
+            protected void init() {
+                super.init();
+                getTransform().setPosition(0, 0, -1);
+
+            }
+
+            @Override
+            protected void update() {
+                super.update();
+                if (Input.isKeyDown(GLFW.GLFW_KEY_F3)) {
+                    Settings.setDebug(!Settings.isDebug());
+                }
+            }
+        });
 
         RogueSpores.addGameObject(new GameObject("cube", new MeshRenderer("cube", new Primitives.Cube(1, 1))) {
 

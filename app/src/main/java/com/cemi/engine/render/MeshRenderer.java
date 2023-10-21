@@ -1,10 +1,4 @@
-package com.cemi.rogue.spores.render;
-
-import com.cemi.engine.render.GLStateManager;
-import com.cemi.engine.render.Mesh;
-import com.cemi.engine.render.Primitives;
-import com.cemi.engine.render.Renderer;
-import com.cemi.engine.render.Shader;
+package com.cemi.engine.render;
 
 public class MeshRenderer extends Renderer {
 
@@ -50,6 +44,7 @@ public class MeshRenderer extends Renderer {
         this.mesh = mesh;
     }
 
+    @Override
     public void render(float x, float y, float z, float xScale, float yScale, float zScale, float pitch, float yaw,
             float roll) {
         shader.bind();

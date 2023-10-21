@@ -14,8 +14,9 @@ import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
+import com.cemi.engine.render.MeshRenderer;
 import com.cemi.engine.render.Renderer;
-import com.cemi.rogue.spores.render.MeshRenderer;
+import com.cemi.engine.render.UIRenderer;
 
 public class Engine {
 
@@ -40,6 +41,8 @@ public class Engine {
         });
 
         initGLFW();
+
+        UIRenderer.init();
 
         for (GameObject gameObject : gameObjects) {
             Renderer renderer = gameObject.getRenderer();

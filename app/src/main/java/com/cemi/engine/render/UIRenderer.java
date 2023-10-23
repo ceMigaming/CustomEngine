@@ -2,11 +2,20 @@ package com.cemi.engine.render;
 
 import org.lwjgl.opengl.GL30;
 
+import com.cemi.engine.GameObject;
 import com.cemi.engine.Settings;
 
 public class UIRenderer {
 
-    Shader uiShader = new Shader("uiShader");
+    static Shader uiShader = Shader.UI_SHADER;
+
+    public UIRenderer() {
+        uiShader = Shader.UI_SHADER;
+    }
+
+    public UIRenderer(Shader shader) {
+        uiShader = shader;
+    }
 
     private static float vertices[] = {
             -1, -1, 0,
@@ -55,6 +64,13 @@ public class UIRenderer {
     }
 
     public void render(int x, int y, int width, int height) {
+
+        float mappedWidth = (float) width / Settings.getWidth();
+        float mappedHeight = (float) height / Settings.getHeight();
+
+        float mappedX = (float) x / Settings.getWidth() * 2 - 1 + mappedWidth;
+        float mappedY = (float) y / Settings.getHeight() * 2 + 1 - mappedHeight;
+
         uiShader.bind();
         GLStateManager.glColor4f(1, 1, 1, 1);
         GL30.glBindVertexArray(vaoID);
@@ -70,8 +86,16 @@ public class UIRenderer {
             GLStateManager.glColor4f(1, 0, 1, 1);
             GL30.glDrawElements(GL30.GL_LINE_LOOP, indices.length, GL30.GL_UNSIGNED_INT, 0);
         }
-        GLStateManager.glApplyModel(x, y, 0, 1.f, 1.f, 1.f, 0.f, 0.f, 0.f);
-        GLStateManager.glScalef(0.5f, 0.5f, 1.f);
+        GLStateManager.glApplyModel(mappedX, mappedY, 0, mappedWidth, mappedHeight, 1.f, 0.f, 0.f, 0.f);
         uiShader.unbind();
+    }
+
+    public void render(GameObject gameObject) {
+        render((int) gameObject.getTransform().getPosition().x, (int) gameObject.getTransform().getPosition().y,
+                (int) gameObject.getTransform().getScale().x, (int) gameObject.getTransform().getScale().y);
+    }
+
+    public Shader getShader() {
+        return uiShader;
     }
 }

@@ -115,6 +115,10 @@ public class Transform {
         this.scale = scale;
     }
 
+    public void setScale(float x, float y, float z) {
+        this.scale = new Vector3f(x, y, z);
+    }
+
     public Transform copy() {
         return new Transform(position, rotation, scale);
     }

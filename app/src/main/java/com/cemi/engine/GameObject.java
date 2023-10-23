@@ -1,6 +1,7 @@
 package com.cemi.engine;
 
 import com.cemi.engine.render.Renderer;
+import com.cemi.engine.render.UIRenderer;
 
 public class GameObject {
 
@@ -13,6 +14,8 @@ public class GameObject {
     private boolean active = true;
 
     private Renderer renderer;
+
+    private UIRenderer uiRenderer;
 
     public GameObject() {
         name = "gameobject";
@@ -32,6 +35,12 @@ public class GameObject {
         init();
     }
 
+    public GameObject(String name, UIRenderer renderer) {
+        this.name = name;
+        this.uiRenderer = renderer;
+        init();
+    }
+
     public void callUpdate() {
         update();
     }
@@ -45,11 +54,14 @@ public class GameObject {
     }
 
     protected void update() {
-        
+
     }
 
     protected void render() {
-        renderer.render(this);
+        if (uiRenderer != null)
+            uiRenderer.render(this);
+        else if (renderer != null)
+            renderer.render(this);
     }
 
     public Transform getTransform() {

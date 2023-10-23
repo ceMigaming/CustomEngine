@@ -16,6 +16,7 @@ import com.cemi.engine.render.Primitives;
 import com.cemi.engine.render.Renderer;
 import com.cemi.engine.render.Shader;
 import com.cemi.engine.render.UIRenderer;
+import com.cemi.engine.render.text.TextRenderer;
 
 public class RogueSpores extends Engine {
 
@@ -53,8 +54,9 @@ public class RogueSpores extends Engine {
                 if (Input.isKeyPressed(GLFW.GLFW_KEY_Q)) {
                     getLookDirection().rotateAxis((float) Time.getDeltaTime(), 0.f, 1.f, 0.f);
                 }
-                // getLookDirection().rotateAxis((float) Time.getDeltaTime() * (float) Input.getDeltaMouse().x, 0.f, 1.f,
-                //         0.f);
+                // getLookDirection().rotateAxis((float) Time.getDeltaTime() * (float)
+                // Input.getDeltaMouse().x, 0.f, 1.f,
+                // 0.f);
                 float deltaY = (float) Time.getDeltaTime() * (float) -Input.getDeltaMouse().y;
                 float angle = (float) Math.atan2(getLookDirection().z, getLookDirection().x);
                 // getLookDirection().rotateX((float) Math.sin(angle) * deltaY);
@@ -84,12 +86,18 @@ public class RogueSpores extends Engine {
             protected void init() {
                 super.init();
                 getTransform().setPosition(0, 0, -1);
+                getTransform().setScale(200, 200, 1);
 
             }
 
             @Override
             protected void update() {
                 super.update();
+                getTransform().translate((Input.isKeyPressed(GLFW.GLFW_KEY_LEFT) ? -5 : 0)
+                        + (Input.isKeyPressed(GLFW.GLFW_KEY_RIGHT) ? 5 : 0),
+                        (Input.isKeyPressed(GLFW.GLFW_KEY_DOWN) ? -5 : 0)
+                                + (Input.isKeyPressed(GLFW.GLFW_KEY_UP) ? 5 : 0),
+                        0);
                 if (Input.isKeyDown(GLFW.GLFW_KEY_F3)) {
                     Settings.setDebug(!Settings.isDebug());
                 }

@@ -1,6 +1,8 @@
 package com.cemi.engine;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,6 +13,19 @@ import java.util.stream.Collectors;
 import org.lwjgl.opengl.GL30;
 
 public class FileUtils {
+    
+    public static byte[] loadBytes(String path) throws IOException{
+        File byteFile = new File(path);
+        FileInputStream fileInputStream = null;
+            
+        fileInputStream = new FileInputStream(byteFile);
+        byte[] data = new byte[(int) byteFile.length()];
+        
+        fileInputStream.read(data);
+        fileInputStream.close();
+  
+        return data;          
+    }
 
     public static String loadFileAsString(String path) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(Engine.class.getResourceAsStream(path)));

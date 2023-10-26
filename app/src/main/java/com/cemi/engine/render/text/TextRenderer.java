@@ -28,6 +28,12 @@ public class TextRenderer {
         }
         renderer.setText(glyph);
         Dimension dimension = renderer.getPreferredSize();
+        if (dimension.getWidth() == 0) {
+            dimension.width = 12;
+        }
+        if (dimension.getHeight() == 0) {
+            dimension.height = 12;
+        }
         BufferedImage bufferedImage = new BufferedImage(dimension.width, dimension.height,
                 BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = bufferedImage.getGraphics();
@@ -41,7 +47,7 @@ public class TextRenderer {
         // seperate the text into glyphs using regex <(.*)>(.*)</\1>
         // then render each glyph and combine them into one image
         text = text.replaceAll("</?html>", "");
-        String[] glyphs = Pattern.compile("(<(.*)>(.*)</\\2>)|(?<!<[^>]+>)\\b\\w+\\b(?!</[^>]+>)")
+        String[] glyphs = Pattern.compile("(<([^>]*)>([^<>]*)<\\/\\2>)|.")
                 .matcher(text)
                 .results()
                 .map(MatchResult::group)

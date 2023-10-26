@@ -31,7 +31,7 @@ class TextRendererTest {
     @Test
     public void renderStringTest() {
         TextRenderer textRenderer = new TextRenderer();
-        BufferedImage glyph = textRenderer.getRenderedText("<html>a<sup>2</sup></html>");
+        BufferedImage glyph = textRenderer.getRenderedText("<html>a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup></html>");
         try {
             ImageIO.write(glyph, "png", new File(
                     "C:/Users/Maciek/Downloads/image2.png"));

@@ -1,28 +1,27 @@
-package com.cemi.rogue.spores;
+package com.cemi.timetravelingheroes;
 
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import com.cemi.engine.Engine;
-import com.cemi.engine.GameObject;
-import com.cemi.engine.Input;
-import com.cemi.engine.Settings;
-import com.cemi.engine.Time;
-import com.cemi.engine.Transform;
+import com.cemi.engine.math.GameObject;
+import com.cemi.engine.math.Transform;
 import com.cemi.engine.render.Camera;
 import com.cemi.engine.render.GLStateManager;
 import com.cemi.engine.render.MeshRenderer;
 import com.cemi.engine.render.Primitives;
 import com.cemi.engine.render.Renderer;
 import com.cemi.engine.render.Shader;
-import com.cemi.engine.render.UIRenderer;
-import com.cemi.engine.render.text.TextRenderer;
+import com.cemi.engine.render.ui.UIRenderer;
+import com.cemi.engine.system.Input;
+import com.cemi.engine.system.Settings;
+import com.cemi.engine.system.Time;
 
-public class RogueSpores extends Engine {
+public class TimeTravelingHeroes extends Engine {
 
     public static void main(String[] args) {
         Settings.setTitle("Rogue Spores");
-        Settings.setDebug(true);
+        // Settings.setDebug(true);
 
         Camera.setMainCamera(new Camera() {
             @Override
@@ -80,7 +79,7 @@ public class RogueSpores extends Engine {
             }
         };
 
-        RogueSpores.addGameObject(new GameObject("ui", new UIRenderer()) {
+        TimeTravelingHeroes.addGameObject(new GameObject("ui", new UIRenderer()) {
 
             @Override
             protected void init() {
@@ -104,7 +103,7 @@ public class RogueSpores extends Engine {
             }
         });
 
-        RogueSpores.addGameObject(new GameObject("cube", new MeshRenderer("cube", new Primitives.Cube(1, 1))) {
+        TimeTravelingHeroes.addGameObject(new GameObject("cube", new MeshRenderer("cube", new Primitives.Cube(1, 1))) {
 
             @Override
             protected void init() {
@@ -119,8 +118,8 @@ public class RogueSpores extends Engine {
                 // getTransform().translate(0, 0, -0.005f);
             }
         });
-        RogueSpores.addGameObject(new GameObject("water", waterRenderer));
+        TimeTravelingHeroes.addGameObject(new GameObject("water", waterRenderer));
         Camera.getMainCamera().getTransform().setPosition(0, 0, 0);
-        RogueSpores.run();
+        TimeTravelingHeroes.run();
     }
 }

@@ -14,9 +14,14 @@ import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
+import com.cemi.engine.math.GameObject;
 import com.cemi.engine.render.MeshRenderer;
 import com.cemi.engine.render.Renderer;
-import com.cemi.engine.render.UIRenderer;
+import com.cemi.engine.render.ui.UIRenderer;
+import com.cemi.engine.system.Input;
+import com.cemi.engine.system.LocalizationManager;
+import com.cemi.engine.system.Settings;
+import com.cemi.engine.system.Time;
 
 public class Engine {
 

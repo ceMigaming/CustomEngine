@@ -7,8 +7,8 @@ import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL30;
 
-import com.cemi.engine.Settings;
-import com.cemi.engine.Transform;
+import com.cemi.engine.math.Transform;
+import com.cemi.engine.system.Settings;
 
 public class GLStateManager {
 

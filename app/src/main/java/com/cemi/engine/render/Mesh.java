@@ -7,7 +7,7 @@ import java.util.List;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL30;
 
-import com.cemi.engine.Settings;
+import com.cemi.engine.system.Settings;
 
 public class Mesh {
     private float vertices[];

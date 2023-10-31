@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TimeTravelingHeroes",
+            "request": "launch",
+            "mainClass": "com.cemi.timetravelingheroes.TimeTravelingHeroes",
+            "projectName": "app"
+        },
+        {
+            "type": "java",
             "name": "RogueSpores",
             "request": "launch",
             "mainClass": "com.cemi.rogue.spores.RogueSpores",

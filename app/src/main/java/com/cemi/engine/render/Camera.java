@@ -4,8 +4,8 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import com.cemi.engine.Engine;
-import com.cemi.engine.GameObject;
-import com.cemi.engine.Transform;
+import com.cemi.engine.math.GameObject;
+import com.cemi.engine.math.Transform;
 
 public class Camera extends GameObject {
 

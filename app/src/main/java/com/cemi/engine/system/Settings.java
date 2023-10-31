@@ -1,6 +1,8 @@
-package com.cemi.engine;
+package com.cemi.engine.system;
 
 import org.lwjgl.glfw.GLFW;
+
+import com.cemi.engine.Engine;
 
 public class Settings {
     private static int width = 1280;

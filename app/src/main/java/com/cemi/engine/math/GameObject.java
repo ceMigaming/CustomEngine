@@ -1,7 +1,7 @@
-package com.cemi.engine;
+package com.cemi.engine.math;
 
 import com.cemi.engine.render.Renderer;
-import com.cemi.engine.render.UIRenderer;
+import com.cemi.engine.render.ui.UIRenderer;
 
 public class GameObject {
 

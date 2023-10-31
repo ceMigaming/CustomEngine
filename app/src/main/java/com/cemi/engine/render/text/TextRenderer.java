@@ -18,9 +18,9 @@ public class TextRenderer {
         renderer.setFont(new Font("Serif", Font.PLAIN, 48));
     }
 
-    HashMap<String, BufferedImage> cachedGlyphs = new HashMap<>();
+    private static final HashMap<String, BufferedImage> cachedGlyphs = new HashMap<>();
 
-    public BufferedImage getRenderedGlyph(String glyph) {
+    public static BufferedImage getRenderedGlyph(String glyph) {
         glyph = "<html>" + glyph.replaceAll("</?html>", "") + "</html>";
         String glyphName = glyph.replaceAll("</?html>", "");
         if (cachedGlyphs.containsKey(glyphName)) {
@@ -43,7 +43,7 @@ public class TextRenderer {
         return bufferedImage;
     }
 
-    public BufferedImage getRenderedText(String text) {
+    public static BufferedImage getRenderedText(String text) {
         // seperate the text into glyphs using regex <(.*)>(.*)</\1>
         // then render each glyph and combine them into one image
         text = text.replaceAll("</?html>", "");

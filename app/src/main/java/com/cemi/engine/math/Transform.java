@@ -1,4 +1,4 @@
-package com.cemi.engine;
+package com.cemi.engine.math;
 
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;

@@ -2,7 +2,7 @@ package com.cemi.engine.render;
 
 import org.lwjgl.opengl.GL30;
 
-import com.cemi.engine.FileUtils;
+import com.cemi.engine.system.FileUtils;
 
 public class Shader {
     protected int id;

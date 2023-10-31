@@ -1,13 +1,19 @@
-package com.cemi.engine.render;
+package com.cemi.engine.render.ui;
+
+import java.awt.image.BufferedImage;
 
 import org.lwjgl.opengl.GL30;
 
-import com.cemi.engine.GameObject;
-import com.cemi.engine.Settings;
+import com.cemi.engine.math.GameObject;
+import com.cemi.engine.render.GLStateManager;
+import com.cemi.engine.render.Shader;
+import com.cemi.engine.system.Settings;
 
 public class UIRenderer {
 
     static Shader uiShader = Shader.UI_SHADER;
+
+    protected BufferedImage image;
 
     public UIRenderer() {
         uiShader = Shader.UI_SHADER;

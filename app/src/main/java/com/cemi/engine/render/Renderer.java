@@ -1,6 +1,6 @@
 package com.cemi.engine.render;
 
-import com.cemi.engine.GameObject;
+import com.cemi.engine.math.GameObject;
 
 public class Renderer {
     protected String name;

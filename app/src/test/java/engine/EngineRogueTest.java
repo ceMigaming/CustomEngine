@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import com.cemi.engine.Engine;
-import com.cemi.engine.LocalizationManager;
+import com.cemi.engine.system.LocalizationManager;
 
 class EngineRogueTest {
 

@@ -56,8 +56,8 @@ public class TimeTravelingHeroes extends Engine {
                 // getLookDirection().rotateAxis((float) Time.getDeltaTime() * (float)
                 // Input.getDeltaMouse().x, 0.f, 1.f,
                 // 0.f);
-                float deltaY = (float) Time.getDeltaTime() * (float) -Input.getDeltaMouse().y;
-                float angle = (float) Math.atan2(getLookDirection().z, getLookDirection().x);
+                // float deltaY = (float) Time.getDeltaTime() * (float) -Input.getDeltaMouse().y;
+                // float angle = (float) Math.atan2(getLookDirection().z, getLookDirection().x);
                 // getLookDirection().rotateX((float) Math.sin(angle) * deltaY);
                 // getLookDirection().rotateZ((float) Math.cos(angle) * -deltaY);
             }
@@ -79,28 +79,28 @@ public class TimeTravelingHeroes extends Engine {
             }
         };
 
-        TimeTravelingHeroes.addGameObject(new GameObject("ui", new UIRenderer()) {
+        // TimeTravelingHeroes.addGameObject(new GameObject("ui", new UIRenderer()) {
 
-            @Override
-            protected void init() {
-                super.init();
-                getTransform().setPosition(0, 0, 0);
-                getTransform().setScale(100f, 100f, 1f);
-            }
+        //     @Override
+        //     protected void init() {
+        //         super.init();
+        //         getTransform().setPosition(0, 0, 0);
+        //         getTransform().setScale(100f, 100f, 1f);
+        //     }
 
-            @Override
-            protected void update() {
-                super.update();
-                getTransform().translate((Input.isKeyPressed(GLFW.GLFW_KEY_LEFT) ? -5 : 0)
-                        + (Input.isKeyPressed(GLFW.GLFW_KEY_RIGHT) ? 5 : 0),
-                        (Input.isKeyPressed(GLFW.GLFW_KEY_DOWN) ? -5 : 0)
-                                + (Input.isKeyPressed(GLFW.GLFW_KEY_UP) ? 5 : 0),
-                        0);
-                if (Input.isKeyDown(GLFW.GLFW_KEY_F3)) {
-                    Settings.setDebug(!Settings.isDebug());
-                }
-            }
-        });
+        //     @Override
+        //     protected void update() {
+        //         super.update();
+        //         getTransform().translate((Input.isKeyPressed(GLFW.GLFW_KEY_LEFT) ? -5 : 0)
+        //                 + (Input.isKeyPressed(GLFW.GLFW_KEY_RIGHT) ? 5 : 0),
+        //                 (Input.isKeyPressed(GLFW.GLFW_KEY_DOWN) ? -5 : 0)
+        //                         + (Input.isKeyPressed(GLFW.GLFW_KEY_UP) ? 5 : 0),
+        //                 0);
+        //         if (Input.isKeyDown(GLFW.GLFW_KEY_F3)) {
+        //             Settings.setDebug(!Settings.isDebug());
+        //         }
+        //     }
+        // });
 
         TimeTravelingHeroes.addGameObject(new GameObject("cube", new MeshRenderer("cube", new Primitives.Cube(1, 1))) {
 
@@ -119,6 +119,6 @@ public class TimeTravelingHeroes extends Engine {
         });
         TimeTravelingHeroes.addGameObject(new GameObject("water", waterRenderer));
         Camera.getMainCamera().getTransform().setPosition(0, 0, 0);
-        TimeTravelingHeroes.run();
+        new TimeTravelingHeroes().run();
     }
 }

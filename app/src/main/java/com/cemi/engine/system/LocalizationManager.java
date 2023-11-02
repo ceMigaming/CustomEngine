@@ -14,9 +14,9 @@ public class LocalizationManager {
         setLanguage("en");
         try {
             // for each file in resources/localization/
-            for (String fileName : FileUtils.getResourceFiles("/localization")) {
+            for (String fileName : IOUtils.getResourceFiles("/localization")) {
                 // load the file as a string
-                String localizationFile = FileUtils.loadFileAsString("/localization/" + fileName);
+                String localizationFile = IOUtils.loadFileAsString("/localization/" + fileName);
                 HashMap<String, String> languageMap = new HashMap<String, String>();
                 // for each line in the file
                 for (String line : localizationFile.split("\n")) {

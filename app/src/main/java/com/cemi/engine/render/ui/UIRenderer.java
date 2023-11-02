@@ -6,13 +6,13 @@ import com.cemi.engine.math.GameObject;
 import com.cemi.engine.render.GLStateManager;
 import com.cemi.engine.render.Shader;
 import com.cemi.engine.system.Settings;
+import org.lwjgl.nuklear.Nuklear;
 
 public class UIRenderer {
 
     static Shader uiShader = Shader.UI_SHADER;
 
     public UIRenderer() {
-        uiShader = Shader.UI_SHADER;
     }
 
     public UIRenderer(Shader shader) {

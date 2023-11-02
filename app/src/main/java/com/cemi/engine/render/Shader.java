@@ -2,7 +2,7 @@ package com.cemi.engine.render;
 
 import org.lwjgl.opengl.GL30;
 
-import com.cemi.engine.system.FileUtils;
+import com.cemi.engine.system.IOUtils;
 
 public class Shader {
     protected int id;
@@ -16,7 +16,7 @@ public class Shader {
     }
 
     public void init() {
-        id = FileUtils.createShader(path);
+        id = IOUtils.createShader(path);
     }
 
     public void bind() {

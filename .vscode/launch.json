@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GLFWDemo",
+            "request": "launch",
+            "mainClass": "com.cemi.timetravelingheroes.GLFWDemo",
+            "projectName": "app"
+        },
+        {
+            "type": "java",
             "name": "TimeTravelingHeroes",
             "request": "launch",
             "mainClass": "com.cemi.timetravelingheroes.TimeTravelingHeroes",

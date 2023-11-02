@@ -1,7 +1,5 @@
 package com.cemi.engine.render.ui;
 
-import java.awt.image.BufferedImage;
-
 import org.lwjgl.opengl.GL30;
 
 import com.cemi.engine.math.GameObject;
@@ -13,8 +11,6 @@ public class UIRenderer {
 
     static Shader uiShader = Shader.UI_SHADER;
 
-    protected BufferedImage image;
-
     public UIRenderer() {
         uiShader = Shader.UI_SHADER;
     }
@@ -23,17 +19,17 @@ public class UIRenderer {
         uiShader = shader;
     }
 
-    private static float vertices[] = {
+    protected static float vertices[] = {
             -1, -1, 0,
             1, -1, 0,
             1, 1, 0,
             -1, 1, 0
     };
-    private static int indices[] = {
+    protected static int indices[] = {
             0, 1, 2,
             2, 3, 0
     };
-    private static float textureCoords[] = {
+    protected static float textureCoords[] = {
             0, 0,
             1, 0,
             1, 1,
@@ -45,9 +41,9 @@ public class UIRenderer {
             0, 0, 1,
             0, 0, 1 };
 
-    private static int vaoID;
-    private static int vboID;
-    private static int iboID;
+    protected static int vaoID;
+    protected static int vboID;
+    protected static int iboID;
 
     public static void init() {
         vaoID = GL30.glGenVertexArrays();
@@ -76,9 +72,9 @@ public class UIRenderer {
 
         float mappedX = (float) x / Settings.getWidth() * 2 - 1 + mappedWidth;
         float mappedY = (float) y / Settings.getHeight() * 2 + 1 - mappedHeight;
-
         uiShader.bind();
-        GLStateManager.glColor4f(1, 1, 1, 1);
+        GLStateManager.glColor4f(1, 0, 0, 1);
+        GLStateManager.glApplyModel(mappedX, mappedY, 0, mappedWidth, mappedHeight, 1.f, 0.f, 0.f, 0.f);
         GL30.glBindVertexArray(vaoID);
         GL30.glEnableVertexAttribArray(0);
 
@@ -92,7 +88,6 @@ public class UIRenderer {
             GLStateManager.glColor4f(1, 0, 1, 1);
             GL30.glDrawElements(GL30.GL_LINE_LOOP, indices.length, GL30.GL_UNSIGNED_INT, 0);
         }
-        GLStateManager.glApplyModel(mappedX, mappedY, 0, mappedWidth, mappedHeight, 1.f, 0.f, 0.f, 0.f);
         uiShader.unbind();
     }
 

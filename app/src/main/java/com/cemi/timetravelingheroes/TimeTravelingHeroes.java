@@ -21,7 +21,7 @@ public class TimeTravelingHeroes extends Engine {
 
     public static void main(String[] args) {
         Settings.setTitle("Rogue Spores");
-        // Settings.setDebug(true);
+        Settings.setDebug(true);
 
         Camera.setMainCamera(new Camera() {
             @Override
@@ -84,9 +84,8 @@ public class TimeTravelingHeroes extends Engine {
             @Override
             protected void init() {
                 super.init();
-                getTransform().setPosition(0, 0, -1);
-                getTransform().setScale(200, 200, 1);
-
+                getTransform().setPosition(0, 0, 0);
+                getTransform().setScale(100f, 100f, 1f);
             }
 
             @Override

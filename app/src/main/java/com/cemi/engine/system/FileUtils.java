@@ -18,9 +18,7 @@ public class FileUtils {
 
     public static byte[] loadBytes(String path) throws IOException {
         File byteFile = new File(path);
-        FileInputStream fileInputStream = null;
-
-        fileInputStream = new FileInputStream(byteFile);
+        FileInputStream fileInputStream = new FileInputStream(byteFile);
         byte[] data = new byte[(int) byteFile.length()];
 
         fileInputStream.read(data);

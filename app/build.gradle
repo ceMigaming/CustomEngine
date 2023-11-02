@@ -51,12 +51,12 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'com.cemi.sporerogue.SporeRogue'
+    mainClass = 'com.cemi.timetravelingheroes.TimeTravelingHeroes'
 }
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.cemi.sporerogue.SporeRogue`'
+        attributes 'Main-Class': 'com.cemi.timetravelingheroes.TimeTravelingHeroes`'
     }
 }
 

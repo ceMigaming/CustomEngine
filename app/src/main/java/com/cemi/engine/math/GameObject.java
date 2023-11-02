@@ -95,4 +95,8 @@ public class GameObject {
     public Renderer getRenderer() {
         return renderer;
     }
+
+    public UIRenderer getUiRenderer() {
+        return uiRenderer;
+    }
 }

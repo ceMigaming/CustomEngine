@@ -42,24 +42,28 @@ public class Primitives {
             this.subdivisions = subdivisions;
             Builder builder = new Builder();
             float halfSize = size / 2.f;
-            for (float x = -halfSize; x <= halfSize; x += size) {
-                for (float y = -halfSize; y <= halfSize; y += size) {
-                    for (float z = -halfSize; z <= halfSize; z += size) {
-                        builder.withVertex(new Vector3f(x, y, z));
-                    }
-                }
-            }
-            for (int vi = 0; vi < 8; vi++) {
-                int baseIndex = vi * 4;
-                builder.withTriangle(new Triangle(baseIndex, baseIndex + 1, baseIndex + 2));
-                // builder.withTriangle(new Triangle(baseIndex + 2, baseIndex + 1, baseIndex + 3));
-                // builder.withTriangle(new Triangle(baseIndex + 2, baseIndex + 3, baseIndex + 6));
-                // builder.withTriangle(new Triangle(baseIndex + 6, baseIndex + 3, baseIndex + 7));
-                // builder.withTriangle(new Triangle(baseIndex + 6, baseIndex + 7, baseIndex + 5));
-                // builder.withTriangle(new Triangle(baseIndex + 5, baseIndex + 7, baseIndex + 4));
-                // builder.withTriangle(new Triangle(baseIndex + 5, baseIndex + 4, baseIndex));
-                // builder.withTriangle(new Triangle(baseIndex, baseIndex + 4, baseIndex + 1));
-            }
+            builder.withVertex(new Vector3f(-halfSize, halfSize, halfSize));
+            builder.withVertex(new Vector3f(-halfSize, -halfSize, halfSize));
+            builder.withVertex(new Vector3f(halfSize, -halfSize, halfSize));
+            builder.withVertex(new Vector3f(halfSize, halfSize, halfSize));
+            builder.withVertex(new Vector3f(-halfSize, halfSize, -halfSize));
+            builder.withVertex(new Vector3f(halfSize, halfSize, -halfSize));
+            builder.withVertex(new Vector3f(-halfSize, -halfSize, -halfSize));
+            builder.withVertex(new Vector3f(halfSize, -halfSize, -halfSize));
+
+            builder.withTriangle(new Triangle(0, 1, 3));
+            builder.withTriangle(new Triangle(3, 1, 2));
+            builder.withTriangle(new Triangle(4, 0, 3));
+            builder.withTriangle(new Triangle(5, 4, 3));
+            builder.withTriangle(new Triangle(3, 2, 7));
+            builder.withTriangle(new Triangle(5, 3, 7));
+            builder.withTriangle(new Triangle(6, 1, 0));
+            builder.withTriangle(new Triangle(6, 0, 4));
+            builder.withTriangle(new Triangle(2, 1, 6));
+            builder.withTriangle(new Triangle(2, 6, 7));
+            builder.withTriangle(new Triangle(7, 6, 4));
+            builder.withTriangle(new Triangle(7, 4, 5));
+
             setMesh(builder.build());
         }
 

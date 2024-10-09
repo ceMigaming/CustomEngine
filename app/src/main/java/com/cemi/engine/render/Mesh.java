@@ -143,6 +143,7 @@ public class Mesh {
     }
 
     public void render() {
+        GL30.glEnable(GL30.GL_DEPTH_TEST);
         GL30.glBindVertexArray(vaoID);
         GL30.glEnableVertexAttribArray(0);
 
@@ -152,9 +153,11 @@ public class Mesh {
         GL30.glBindBuffer(GL30.GL_ELEMENT_ARRAY_BUFFER, iboID);
         GL30.glBufferData(GL30.GL_ELEMENT_ARRAY_BUFFER, indices, GL30.GL_STATIC_DRAW);
         GL30.glDrawElements(GL30.GL_TRIANGLES, indices.length, GL30.GL_UNSIGNED_INT, 0);
-        if(Settings.isDebug()) {
-            GLStateManager.glColor4f(1, 0, 1, 1);
-            GL30.glDrawElements(GL30.GL_LINE_LOOP, indices.length, GL30.GL_UNSIGNED_INT, 0);
+        GL30.glDisable(GL30.GL_DEPTH_TEST);
+        if (Settings.isDebug()) {
+            GL30.glPolygonMode(GL30.GL_FRONT_AND_BACK, GL30.GL_LINE);
+        } else {
+            GL30.glPolygonMode(GL30.GL_FRONT_AND_BACK, GL30.GL_FILL);
         }
     }
 

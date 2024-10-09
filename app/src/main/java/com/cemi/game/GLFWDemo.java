@@ -2,9 +2,9 @@
  * Copyright LWJGL. All rights reserved.
  * License terms: https://www.lwjgl.org/license
  */
-package com.cemi.timetravelingheroes;
+package com.cemi.game;
 
-import static com.cemi.timetravelingheroes.IOUtil.ioResourceToByteBuffer;
+import static com.cemi.game.IOUtil.ioResourceToByteBuffer;
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;

@@ -2,7 +2,7 @@
  * Copyright LWJGL. All rights reserved.
  * License terms: https://www.lwjgl.org/license
  */
-package com.cemi.timetravelingheroes;
+package com.cemi.game;
 
 import static org.lwjgl.nuklear.Nuklear.NK_RGBA;
 import static org.lwjgl.nuklear.Nuklear.NK_TEXT_LEFT;

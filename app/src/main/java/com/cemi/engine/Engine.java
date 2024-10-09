@@ -237,7 +237,7 @@ public class Engine {
     private int uniform_tex;
     private int uniform_proj;
 
-    private final com.cemi.timetravelingheroes.Demo demo = new com.cemi.timetravelingheroes.Demo();
+    private final com.cemi.game.Demo demo = new com.cemi.game.Demo();
 
     private void init() {
         Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
@@ -327,7 +327,7 @@ public class Engine {
         GLCapabilities caps = GL.createCapabilities();
         Callback debugProc = GLUtil.setupDebugMessageCallback();
 
-        NkContext ctx = setupWindow(window);
+        // NkContext ctx = setupWindow(window);
 
         int BITMAP_W = 1024;
         int BITMAP_H = 1024;
@@ -692,32 +692,32 @@ public class Engine {
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, max_element_buffer, GL_STREAM_DRAW);
 
             // load draw vertices & elements directly into vertex + element buffer
-            ByteBuffer vertices = Objects
-                    .requireNonNull(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY, max_vertex_buffer, null));
-            ByteBuffer elements = Objects
-                    .requireNonNull(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY, max_element_buffer, null));
-            try (MemoryStack stack = stackPush()) {
-                // fill convert configuration
-                NkConvertConfig config = NkConvertConfig.calloc(stack)
-                        .vertex_layout(VERTEX_LAYOUT)
-                        .vertex_size(20)
-                        .vertex_alignment(4)
-                        .tex_null(null_texture)
-                        .circle_segment_count(22)
-                        .curve_segment_count(22)
-                        .arc_segment_count(22)
-                        .global_alpha(1.0f)
-                        .shape_AA(AA)
-                        .line_AA(AA);
+            // ByteBuffer vertices = Objects
+            //         .requireNonNull(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY, max_vertex_buffer, null));
+            // ByteBuffer elements = Objects
+            //         .requireNonNull(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY, max_element_buffer, null));
+            // try (MemoryStack stack = stackPush()) {
+            //     // fill convert configuration
+            //     NkConvertConfig config = NkConvertConfig.calloc(stack)
+            //             .vertex_layout(VERTEX_LAYOUT)
+            //             .vertex_size(20)
+            //             .vertex_alignment(4)
+            //             .tex_null(null_texture)
+            //             .circle_segment_count(22)
+            //             .curve_segment_count(22)
+            //             .arc_segment_count(22)
+            //             .global_alpha(1.0f)
+            //             .shape_AA(AA)
+            //             .line_AA(AA);
 
-                // setup buffers to load vertices and elements
-                NkBuffer vbuf = NkBuffer.malloc(stack);
-                NkBuffer ebuf = NkBuffer.malloc(stack);
+            //     // setup buffers to load vertices and elements
+            //     NkBuffer vbuf = NkBuffer.malloc(stack);
+            //     NkBuffer ebuf = NkBuffer.malloc(stack);
 
-                nk_buffer_init_fixed(vbuf, vertices/* , max_vertex_buffer */);
-                nk_buffer_init_fixed(ebuf, elements/* , max_element_buffer */);
-                nk_convert(ctx, cmds, vbuf, ebuf, config);
-            }
+            //     nk_buffer_init_fixed(vbuf, vertices/* , max_vertex_buffer */);
+            //     nk_buffer_init_fixed(ebuf, elements/* , max_element_buffer */);
+            //     nk_convert(ctx, cmds, vbuf, ebuf, config);
+            // }
             glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
             glUnmapBuffer(GL_ARRAY_BUFFER);
 
@@ -726,21 +726,21 @@ public class Engine {
             float fb_scale_y = (float) display_height / (float) Settings.getHeight();
 
             long offset = NULL;
-            for (NkDrawCommand cmd = nk__draw_begin(ctx, cmds); cmd != null; cmd = nk__draw_next(cmd, cmds, ctx)) {
-                if (cmd.elem_count() == 0) {
-                    continue;
-                }
-                glBindTexture(GL_TEXTURE_2D, cmd.texture().id());
-                glScissor(
-                        (int) (cmd.clip_rect().x() * fb_scale_x),
-                        (int) ((Settings.getHeight() - (int) (cmd.clip_rect().y() + cmd.clip_rect().h())) * fb_scale_y),
-                        (int) (cmd.clip_rect().w() * fb_scale_x),
-                        (int) (cmd.clip_rect().h() * fb_scale_y));
-                glDrawElements(GL_TRIANGLES, cmd.elem_count(), GL_UNSIGNED_SHORT, offset);
-                offset += cmd.elem_count() * 2;
-            }
-            nk_clear(ctx);
-            nk_buffer_clear(cmds);
+            // for (NkDrawCommand cmd = nk__draw_begin(ctx, cmds); cmd != null; cmd = nk__draw_next(cmd, cmds, ctx)) {
+            //     if (cmd.elem_count() == 0) {
+            //         continue;
+            //     }
+            //     glBindTexture(GL_TEXTURE_2D, cmd.texture().id());
+            //     glScissor(
+            //             (int) (cmd.clip_rect().x() * fb_scale_x),
+            //             (int) ((Settings.getHeight() - (int) (cmd.clip_rect().y() + cmd.clip_rect().h())) * fb_scale_y),
+            //             (int) (cmd.clip_rect().w() * fb_scale_x),
+            //             (int) (cmd.clip_rect().h() * fb_scale_y));
+            //     glDrawElements(GL_TRIANGLES, cmd.elem_count(), GL_UNSIGNED_SHORT, offset);
+            //     offset += cmd.elem_count() * 2;
+            // }
+            // nk_clear(ctx);
+            // nk_buffer_clear(cmds);
         }
 
         glEnable(GL_DEPTH_TEST);

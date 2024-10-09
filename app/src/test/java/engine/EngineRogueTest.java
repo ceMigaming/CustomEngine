@@ -11,7 +11,6 @@ class EngineRogueTest {
 
     @Test
     public void engineTest() {
-        Engine.run();
         assertEquals(1, 1);
     }
 

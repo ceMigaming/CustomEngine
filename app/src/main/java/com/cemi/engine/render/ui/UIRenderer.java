@@ -81,6 +81,8 @@ public class UIRenderer {
         GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, vboID);
         GL30.glBufferData(GL30.GL_ARRAY_BUFFER, vertices, GL30.GL_STATIC_DRAW);
 
+        
+        
         GL30.glBindBuffer(GL30.GL_ELEMENT_ARRAY_BUFFER, iboID);
         GL30.glBufferData(GL30.GL_ELEMENT_ARRAY_BUFFER, indices, GL30.GL_STATIC_DRAW);
         GL30.glDrawElements(GL30.GL_TRIANGLES, indices.length, GL30.GL_UNSIGNED_INT, 0);

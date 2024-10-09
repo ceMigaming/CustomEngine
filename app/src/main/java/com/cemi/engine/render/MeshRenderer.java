@@ -1,5 +1,7 @@
 package com.cemi.engine.render;
 
+import org.lwjgl.opengl.GL11;
+
 public class MeshRenderer extends Renderer {
 
     protected Mesh mesh;

@@ -8,49 +8,14 @@
             "type": "java",
             "name": "GLFWDemo",
             "request": "launch",
-            "mainClass": "com.cemi.timetravelingheroes.GLFWDemo",
+            "mainClass": "com.cemi.game.GLFWDemo",
             "projectName": "app"
         },
         {
             "type": "java",
-            "name": "TimeTravelingHeroes",
+            "name": "Game",
             "request": "launch",
-            "mainClass": "com.cemi.timetravelingheroes.TimeTravelingHeroes",
-            "projectName": "app"
-        },
-        {
-            "type": "java",
-            "name": "RogueSpores",
-            "request": "launch",
-            "mainClass": "com.cemi.rogue.spores.RogueSpores",
-            "projectName": "app"
-        },
-        {
-            "type": "java",
-            "name": "OpenSpores",
-            "request": "launch",
-            "mainClass": "com.cemi.open.spores.OpenSpores",
-            "projectName": "app"
-        },
-        {
-            "type": "java",
-            "name": "Engine",
-            "request": "launch",
-            "mainClass": "com.cemi.engine.Engine",
-            "projectName": "app"
-        },
-        {
-            "type": "java",
-            "name": "SporeRogue",
-            "request": "launch",
-            "mainClass": "com.cemi.sporerogue.SporeRogue",
-            "projectName": "app"
-        },
-        {
-            "type": "java",
-            "name": "WaveSim",
-            "request": "launch",
-            "mainClass": "com.cemi.wavesim.WaveSim",
+            "mainClass": "com.cemi.game.Game",
             "projectName": "app"
         }
     ]

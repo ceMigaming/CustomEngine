@@ -1,4 +1,4 @@
-package com.cemi.timetravelingheroes;
+package com.cemi.game;
 
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
@@ -7,20 +7,16 @@ import com.cemi.engine.Engine;
 import com.cemi.engine.math.GameObject;
 import com.cemi.engine.math.Transform;
 import com.cemi.engine.render.Camera;
-import com.cemi.engine.render.GLStateManager;
 import com.cemi.engine.render.MeshRenderer;
 import com.cemi.engine.render.Primitives;
-import com.cemi.engine.render.Renderer;
-import com.cemi.engine.render.Shader;
-import com.cemi.engine.render.ui.UIRenderer;
 import com.cemi.engine.system.Input;
 import com.cemi.engine.system.Settings;
 import com.cemi.engine.system.Time;
 
-public class TimeTravelingHeroes extends Engine {
+public class Game extends Engine {
 
     public static void main(String[] args) {
-        Settings.setTitle("Rogue Spores");
+        Settings.setTitle("Game");
         Settings.setDebug(true);
 
         Camera.setMainCamera(new Camera() {
@@ -56,53 +52,57 @@ public class TimeTravelingHeroes extends Engine {
                 // getLookDirection().rotateAxis((float) Time.getDeltaTime() * (float)
                 // Input.getDeltaMouse().x, 0.f, 1.f,
                 // 0.f);
-                // float deltaY = (float) Time.getDeltaTime() * (float) -Input.getDeltaMouse().y;
+                // float deltaY = (float) Time.getDeltaTime() * (float)
+                // -Input.getDeltaMouse().y;
                 // float angle = (float) Math.atan2(getLookDirection().z, getLookDirection().x);
                 // getLookDirection().rotateX((float) Math.sin(angle) * deltaY);
                 // getLookDirection().rotateZ((float) Math.cos(angle) * -deltaY);
             }
         });
 
-        Renderer waterRenderer = new MeshRenderer("water", new Shader("water")) {
-            public void render(float x, float y, float z, float xScale, float yScale, float zScale, float pitch,
-                    float yaw,
-                    float roll) {
-                shader.bind();
-                GLStateManager.glColor4f(0, 0.1f, 0.2f, 1);
-                GLStateManager.glSetUniform1f("uTime", (float) Time.getTime());
-                GLStateManager.glSetUniform2f("uResolution", Settings.getWidth(), Settings.getHeight());
-                GLStateManager.glApplyCameraView();
-                GLStateManager.glApplyModel(x, y, z, xScale, yScale, zScale, pitch, yaw, roll);
-                GLStateManager.glApplyProjection();
-                mesh.render();
-                shader.unbind();
-            }
-        };
+        // Renderer waterRenderer = new MeshRenderer("water", new Shader("water")) {
+        // public void render(float x, float y, float z, float xScale, float yScale,
+        // float zScale, float pitch,
+        // float yaw,
+        // float roll) {
+        // shader.bind();
+        // GLStateManager.glColor4f(0, 0.1f, 0.2f, 1);
+        // GLStateManager.glSetUniform1f("uTime", (float) Time.getTime());
+        // GLStateManager.glSetUniform2f("uResolution", Settings.getWidth(),
+        // Settings.getHeight());
+        // GLStateManager.glApplyCameraView();
+        // GLStateManager.glApplyModel(x, y, z, xScale, yScale, zScale, pitch, yaw,
+        // roll);
+        // GLStateManager.glApplyProjection();
+        // mesh.render();
+        // shader.unbind();
+        // }
+        // };
 
         // TimeTravelingHeroes.addGameObject(new GameObject("ui", new UIRenderer()) {
 
-        //     @Override
-        //     protected void init() {
-        //         super.init();
-        //         getTransform().setPosition(0, 0, 0);
-        //         getTransform().setScale(100f, 100f, 1f);
-        //     }
+        // @Override
+        // protected void init() {
+        // super.init();
+        // getTransform().setPosition(0, 0, 0);
+        // getTransform().setScale(100f, 100f, 1f);
+        // }
 
-        //     @Override
-        //     protected void update() {
-        //         super.update();
-        //         getTransform().translate((Input.isKeyPressed(GLFW.GLFW_KEY_LEFT) ? -5 : 0)
-        //                 + (Input.isKeyPressed(GLFW.GLFW_KEY_RIGHT) ? 5 : 0),
-        //                 (Input.isKeyPressed(GLFW.GLFW_KEY_DOWN) ? -5 : 0)
-        //                         + (Input.isKeyPressed(GLFW.GLFW_KEY_UP) ? 5 : 0),
-        //                 0);
-        //         if (Input.isKeyDown(GLFW.GLFW_KEY_F3)) {
-        //             Settings.setDebug(!Settings.isDebug());
-        //         }
-        //     }
+        // @Override
+        // protected void update() {
+        // super.update();
+        // getTransform().translate((Input.isKeyPressed(GLFW.GLFW_KEY_LEFT) ? -5 : 0)
+        // + (Input.isKeyPressed(GLFW.GLFW_KEY_RIGHT) ? 5 : 0),
+        // (Input.isKeyPressed(GLFW.GLFW_KEY_DOWN) ? -5 : 0)
+        // + (Input.isKeyPressed(GLFW.GLFW_KEY_UP) ? 5 : 0),
+        // 0);
+        // if (Input.isKeyDown(GLFW.GLFW_KEY_F3)) {
+        // Settings.setDebug(!Settings.isDebug());
+        // }
+        // }
         // });
 
-        TimeTravelingHeroes.addGameObject(new GameObject("cube", new MeshRenderer("cube", new Primitives.Cube(1, 1))) {
+        Game.addGameObject(new GameObject("cube", new MeshRenderer("cube", new Primitives.Cube(2, 1))) {
 
             @Override
             protected void init() {
@@ -115,10 +115,13 @@ public class TimeTravelingHeroes extends Engine {
                 super.update();
                 Settings.setTitle("Rogue Spores | " + (int) Time.getFPS());
                 // getTransform().translate(0, 0, -0.005f);
+                if (Input.isKeyDown(GLFW.GLFW_KEY_F3)) {
+                    Settings.setDebug(!Settings.isDebug());
+                }
             }
         });
-        TimeTravelingHeroes.addGameObject(new GameObject("water", waterRenderer));
+        // TimeTravelingHeroes.addGameObject(new GameObject("water", waterRenderer));
         Camera.getMainCamera().getTransform().setPosition(0, 0, 0);
-        new TimeTravelingHeroes().run();
+        new Game().run();
     }
 }

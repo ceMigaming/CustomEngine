@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryUtil;
 
 import com.cemi.engine.Engine;
-import com.cemi.timetravelingheroes.IOUtil;
+import com.cemi.game.IOUtil;
 
 public class IOUtils {
 

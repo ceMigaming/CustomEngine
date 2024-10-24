@@ -1,8 +1,8 @@
 package com.cemi.engine.system;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.imageio.ImageIO;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryUtil;
@@ -28,9 +30,9 @@ import com.cemi.game.IOUtil;
 public class IOUtils {
 
     public static byte[] loadBytes(String path) throws IOException {
-        File byteFile = new File(path);
-        FileInputStream fileInputStream = new FileInputStream(byteFile);
-        byte[] data = new byte[(int) byteFile.length()];
+        File file = new File(path);
+        InputStream fileInputStream = getResourceAsStream(path);
+        byte[] data = new byte[(int) file.length()];
 
         fileInputStream.read(data);
         fileInputStream.close();
@@ -43,6 +45,10 @@ public class IOUtils {
         String content = br.lines().collect(Collectors.joining("\n"));
         br.close();
         return content;
+    }
+
+    public static BufferedImage loadImage(String path) throws IOException {
+        return ImageIO.read(Engine.class.getResourceAsStream(path));
     }
 
     public static List<String> getResourceFiles(String path) throws IOException {

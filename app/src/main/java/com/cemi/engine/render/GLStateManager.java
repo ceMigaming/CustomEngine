@@ -27,6 +27,12 @@ public class GLStateManager {
         GL30.glUniform4f(colorLoc, r, g, b, a);
     }
 
+    public static void glColor3f(float r, float g, float b) {
+        int shaderProgramID = GL30.glGetInteger(GL30.GL_CURRENT_PROGRAM);
+        int colorLoc = GL30.glGetUniformLocation(shaderProgramID, "color");
+        GL30.glUniform3f(colorLoc, r, g, b);
+    }
+
     public static void glSetUniform3f(String uniform, float x, float y, float z) {
         int shaderProgramID = GL30.glGetInteger(GL30.GL_CURRENT_PROGRAM);
         int loc = GL30.glGetUniformLocation(shaderProgramID, uniform);

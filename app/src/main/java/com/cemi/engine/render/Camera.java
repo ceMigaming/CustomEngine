@@ -37,7 +37,6 @@ public class Camera extends GameObject {
     @Override
     public void update() {
         super.update();
-        // setLookDirection(getTransform().toEulerAngles());
     }
 
     public static Camera getMainCamera() {

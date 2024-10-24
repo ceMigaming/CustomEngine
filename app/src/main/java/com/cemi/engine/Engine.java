@@ -64,15 +64,21 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_MODULATE;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_REPEAT;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
 import static org.lwjgl.opengl.GL11.GL_RGBA8;
 import static org.lwjgl.opengl.GL11.GL_SCISSOR_TEST;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_ENV;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_ENV_MODE;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
@@ -80,11 +86,13 @@ import static org.lwjgl.opengl.GL11.GL_UNSIGNED_SHORT;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL11.glScissor;
+import static org.lwjgl.opengl.GL11.glTexEnvi;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL11.glViewport;
@@ -121,8 +129,8 @@ import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.stb.STBTruetype.stbtt_GetCodepointHMetrics;
 import static org.lwjgl.stb.STBTruetype.stbtt_GetFontVMetrics;
 import static org.lwjgl.stb.STBTruetype.stbtt_GetPackedQuad;
@@ -327,7 +335,7 @@ public class Engine {
         GLCapabilities caps = GL.createCapabilities();
         Callback debugProc = GLUtil.setupDebugMessageCallback();
 
-        // NkContext ctx = setupWindow(window);
+        NkContext ctx = setupWindow(window);
 
         int BITMAP_W = 1024;
         int BITMAP_H = 1024;
@@ -436,8 +444,8 @@ public class Engine {
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
         GLUtil.setupDebugMessageCallback();
 
-        GL30.glClearColor(0.17f, 0.18f, 0.20f, 0.0f);
-        GL30.glEnable(GL30.GL_DEPTH_TEST);
+        glClearColor(0.17f, 0.18f, 0.20f, 0.0f);
+        glEnable(GL_DEPTH_TEST);
     }
 
     private NkContext setupWindow(long win) {
@@ -561,17 +569,13 @@ public class Engine {
 
     private void loop() {
 
-        // float pitch = (float) Math.PI / 4.f, yaw = 0, roll = (float) Math.PI / 4.f,
-        // scale = 1.f;
-
         while (!glfwWindowShouldClose(window)) {
-            GL30.glClear(GL30.GL_COLOR_BUFFER_BIT | GL30.GL_DEPTH_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             newFrame();
             demo.layout(ctx, 100, 100);
             glClear(GL_COLOR_BUFFER_BIT);
             glClear(GL_DEPTH_BUFFER_BIT);
-            render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
 
             Time.update();
             Input.update();
@@ -583,6 +587,11 @@ public class Engine {
                         gameObject.callRender();
                 }
             }
+
+            glEnable(GL_DEPTH_TEST);
+            // TODO fix nuklear input
+            // render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
+            glDisable(GL_DEPTH_TEST);
 
             glfwSwapBuffers(window);
 
@@ -596,7 +605,6 @@ public class Engine {
             if (renderer != null) {
                 if (renderer instanceof MeshRenderer)
                     ((MeshRenderer) renderer).getMesh().cleanup();
-                renderer.getShader().cleanup();
             }
         }
     }
@@ -667,6 +675,12 @@ public class Engine {
             glDisable(GL_CULL_FACE);
             glDisable(GL_DEPTH_TEST);
             glEnable(GL_SCISSOR_TEST);
+            glEnable(GL_TEXTURE_2D);
+            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glActiveTexture(GL_TEXTURE0);
 
             // setup program
@@ -692,32 +706,32 @@ public class Engine {
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, max_element_buffer, GL_STREAM_DRAW);
 
             // load draw vertices & elements directly into vertex + element buffer
-            // ByteBuffer vertices = Objects
-            //         .requireNonNull(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY, max_vertex_buffer, null));
-            // ByteBuffer elements = Objects
-            //         .requireNonNull(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY, max_element_buffer, null));
-            // try (MemoryStack stack = stackPush()) {
-            //     // fill convert configuration
-            //     NkConvertConfig config = NkConvertConfig.calloc(stack)
-            //             .vertex_layout(VERTEX_LAYOUT)
-            //             .vertex_size(20)
-            //             .vertex_alignment(4)
-            //             .tex_null(null_texture)
-            //             .circle_segment_count(22)
-            //             .curve_segment_count(22)
-            //             .arc_segment_count(22)
-            //             .global_alpha(1.0f)
-            //             .shape_AA(AA)
-            //             .line_AA(AA);
+            ByteBuffer vertices = Objects
+                    .requireNonNull(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY, max_vertex_buffer, null));
+            ByteBuffer elements = Objects
+                    .requireNonNull(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY, max_element_buffer, null));
+            try (MemoryStack stack = stackPush()) {
+                // fill convert configuration
+                NkConvertConfig config = NkConvertConfig.calloc(stack)
+                        .vertex_layout(VERTEX_LAYOUT)
+                        .vertex_size(20)
+                        .vertex_alignment(4)
+                        .tex_null(null_texture)
+                        .circle_segment_count(22)
+                        .curve_segment_count(22)
+                        .arc_segment_count(22)
+                        .global_alpha(1.0f)
+                        .shape_AA(AA)
+                        .line_AA(AA);
 
-            //     // setup buffers to load vertices and elements
-            //     NkBuffer vbuf = NkBuffer.malloc(stack);
-            //     NkBuffer ebuf = NkBuffer.malloc(stack);
+                // setup buffers to load vertices and elements
+                NkBuffer vbuf = NkBuffer.malloc(stack);
+                NkBuffer ebuf = NkBuffer.malloc(stack);
 
-            //     nk_buffer_init_fixed(vbuf, vertices/* , max_vertex_buffer */);
-            //     nk_buffer_init_fixed(ebuf, elements/* , max_element_buffer */);
-            //     nk_convert(ctx, cmds, vbuf, ebuf, config);
-            // }
+                nk_buffer_init_fixed(vbuf, vertices/* , max_vertex_buffer */);
+                nk_buffer_init_fixed(ebuf, elements/* , max_element_buffer */);
+                nk_convert(ctx, cmds, vbuf, ebuf, config);
+            }
             glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
             glUnmapBuffer(GL_ARRAY_BUFFER);
 
@@ -726,21 +740,21 @@ public class Engine {
             float fb_scale_y = (float) display_height / (float) Settings.getHeight();
 
             long offset = NULL;
-            // for (NkDrawCommand cmd = nk__draw_begin(ctx, cmds); cmd != null; cmd = nk__draw_next(cmd, cmds, ctx)) {
-            //     if (cmd.elem_count() == 0) {
-            //         continue;
-            //     }
-            //     glBindTexture(GL_TEXTURE_2D, cmd.texture().id());
-            //     glScissor(
-            //             (int) (cmd.clip_rect().x() * fb_scale_x),
-            //             (int) ((Settings.getHeight() - (int) (cmd.clip_rect().y() + cmd.clip_rect().h())) * fb_scale_y),
-            //             (int) (cmd.clip_rect().w() * fb_scale_x),
-            //             (int) (cmd.clip_rect().h() * fb_scale_y));
-            //     glDrawElements(GL_TRIANGLES, cmd.elem_count(), GL_UNSIGNED_SHORT, offset);
-            //     offset += cmd.elem_count() * 2;
-            // }
-            // nk_clear(ctx);
-            // nk_buffer_clear(cmds);
+            for (NkDrawCommand cmd = nk__draw_begin(ctx, cmds); cmd != null; cmd = nk__draw_next(cmd, cmds, ctx)) {
+                if (cmd.elem_count() == 0) {
+                    continue;
+                }
+                glBindTexture(GL_TEXTURE_2D, cmd.texture().id());
+                glScissor(
+                        (int) (cmd.clip_rect().x() * fb_scale_x),
+                        (int) ((Settings.getHeight() - (int) (cmd.clip_rect().y() + cmd.clip_rect().h())) * fb_scale_y),
+                        (int) (cmd.clip_rect().w() * fb_scale_x),
+                        (int) (cmd.clip_rect().h() * fb_scale_y));
+                glDrawElements(GL_TRIANGLES, cmd.elem_count(), GL_UNSIGNED_SHORT, offset);
+                offset += cmd.elem_count() * 2;
+            }
+            nk_clear(ctx);
+            nk_buffer_clear(cmds);
         }
 
         glEnable(GL_DEPTH_TEST);

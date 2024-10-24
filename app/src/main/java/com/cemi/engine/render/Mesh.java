@@ -1,64 +1,67 @@
 package com.cemi.engine.render;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.joml.Vector3f;
 import org.lwjgl.opengl.GL30;
 
+import com.cemi.engine.render.model.OBJLoader;
 import com.cemi.engine.system.Settings;
 
 public class Mesh {
+    Texture texture;
+    public static final int VERTEX_COMPONENTS = 8;
+    public static final int BYTES_PER_FLOAT = Float.SIZE / Byte.SIZE;
+    private static final int POSITION_SIZE = 3;
+    private static final int NORMAL_SIZE = 3;
+    private static final int TEXTURE_COORDINATES_SIZE = 2;
+
     private float vertices[];
-    private int indices[];
-    private float textureCoords[];
-    private float normals[];
 
     private int vaoID;
     private int vboID;
-    private int iboID;
 
     protected Mesh() {
     }
 
-    public Mesh(float vertices[], int indices[], float textureCoords[], float normals[]) {
+    public Mesh(float vertices[]) {
         this.vertices = vertices;
-        this.indices = indices;
-        this.textureCoords = textureCoords;
-        this.normals = normals;
-    }
-
-    public Mesh(float vertices[], int indices[]) {
-        this.vertices = vertices;
-        this.indices = indices;
-    }
-
-    public Mesh(Mesh mesh) {
-        this.vertices = mesh.getVertices();
-        this.indices = mesh.getIndices();
-        this.textureCoords = mesh.getTextureCoords();
-        this.normals = mesh.getNormals();
     }
 
     public void init() {
         vaoID = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoID);
-        GL30.glEnableVertexAttribArray(0);
 
         vboID = GL30.glGenBuffers();
         GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, vboID);
         GL30.glBufferData(GL30.GL_ARRAY_BUFFER, vertices, GL30.GL_STATIC_DRAW);
 
-        iboID = GL30.glGenBuffers();
-        GL30.glBindBuffer(GL30.GL_ELEMENT_ARRAY_BUFFER, iboID);
-        GL30.glBufferData(GL30.GL_ELEMENT_ARRAY_BUFFER, indices, GL30.GL_STATIC_DRAW);
+        // position
+        GL30.glVertexAttribPointer(0, POSITION_SIZE, GL30.GL_FLOAT, false, VERTEX_COMPONENTS * BYTES_PER_FLOAT, 0);
+        GL30.glEnableVertexAttribArray(0);
 
-        GL30.glVertexAttribPointer(0, 3, GL30.GL_FLOAT, false, 0, 0);
+        // normal
+        GL30.glVertexAttribPointer(1, NORMAL_SIZE, GL30.GL_FLOAT, false, VERTEX_COMPONENTS * BYTES_PER_FLOAT,
+                POSITION_SIZE * BYTES_PER_FLOAT);
+        GL30.glEnableVertexAttribArray(1);
+
+        // texture coordinates
+        GL30.glVertexAttribPointer(2, TEXTURE_COORDINATES_SIZE, GL30.GL_FLOAT, false,
+                VERTEX_COMPONENTS * BYTES_PER_FLOAT,
+                (POSITION_SIZE + NORMAL_SIZE) * BYTES_PER_FLOAT);
+        GL30.glEnableVertexAttribArray(2);
 
         GL30.glBindVertexArray(0);
         GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, 0);
         GL30.glBindBuffer(GL30.GL_ELEMENT_ARRAY_BUFFER, 0);
+        try {
+            texture = new Texture("/textures/tex1.png");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     public float[] getVertices() {
@@ -69,101 +72,64 @@ public class Mesh {
         this.vertices = vertices;
     }
 
-    public int[] getIndices() {
-        return indices;
-    }
-
-    public float[] getTextureCoords() {
-        return textureCoords;
-    }
-
-    public float[] getNormals() {
-        return normals;
-    }
-
     public void setMesh(Mesh mesh) {
         this.vertices = mesh.getVertices();
-        this.indices = mesh.getIndices();
-        this.textureCoords = mesh.getTextureCoords();
-        this.normals = mesh.getNormals();
     }
 
     public static class Builder {
-        private List<Vector3f> vertices = new ArrayList<Vector3f>();
-        private List<Triangle> triangles = new ArrayList<Triangle>();
+        private List<Vertex> vertices = new ArrayList<Vertex>();
 
-        public void withVertex(Vector3f vertex) {
+        public void withVertex(Vertex vertex) {
             vertices.add(vertex);
         }
 
-        public void withVertices(Vector3f[] vertices) {
+        public void withVertex(float x, float y, float z, float normalX, float normalY, float normalZ, float u,
+                float v) {
+            vertices.add(new Vertex(x, y, z, normalX, normalY, normalZ, u, v));
+        }
+
+        public void withVertices(Vertex[] vertices) {
             this.vertices.addAll(Arrays.asList(vertices));
         }
 
-        public void withTriangle(Triangle triangle) {
-            triangles.add(triangle);
-        }
-
-        public void withTriangles(Triangle[] triangles) {
-            this.triangles.addAll(Arrays.asList(triangles));
-        }
-
         public Mesh build() {
-            float[] vertices = new float[this.vertices.size() * 3];
+            float[] vertices = new float[this.vertices.size() * VERTEX_COMPONENTS];
             for (int i = 0; i < this.vertices.size(); i++) {
-                vertices[i * 3] = this.vertices.get(i).x;
-                vertices[i * 3 + 1] = this.vertices.get(i).y;
-                vertices[i * 3 + 2] = this.vertices.get(i).z;
+                vertices[i * VERTEX_COMPONENTS] = this.vertices.get(i).x();
+                vertices[i * VERTEX_COMPONENTS + 1] = this.vertices.get(i).y();
+                vertices[i * VERTEX_COMPONENTS + 2] = this.vertices.get(i).z();
+                vertices[i * VERTEX_COMPONENTS + 3] = this.vertices.get(i).normalX();
+                vertices[i * VERTEX_COMPONENTS + 4] = this.vertices.get(i).normalY();
+                vertices[i * VERTEX_COMPONENTS + 5] = this.vertices.get(i).normalZ();
+                vertices[i * VERTEX_COMPONENTS + 6] = this.vertices.get(i).u();
+                vertices[i * VERTEX_COMPONENTS + 7] = this.vertices.get(i).v();
             }
-            int[] indices = new int[triangles.size() * 3];
-            for (int i = 0; i < triangles.size(); i++) {
-                indices[i * 3] = triangles.get(i).getA();
-                indices[i * 3 + 1] = triangles.get(i).getB();
-                indices[i * 3 + 2] = triangles.get(i).getC();
-            }
-            float[] textureCoords = new float[vertices.length * 2 / 3];
-            float[] normals = new float[vertices.length];
-            /*
-             * for (int i = 0; i < textureCoords.length; i++) {
-             * textureCoords[i * 2] = vertices[i * 3];
-             * textureCoords[i * 2 + 1] = vertices[i * 3 + 1];
-             * }
-             * 
-             * for (int i = 0; i < normals.length; i++) {
-             * normals[i] = 0;
-             * }
-             */
 
-            return new Mesh(vertices, indices, textureCoords, normals);
+            return new Mesh(vertices);
         }
     }
 
-    public static Mesh loadMesh(String fileName) {
+    public static Mesh loadMesh(String path) {
+        if (path.endsWith(".obj")) {
+            return OBJLoader.load(path);
+        }
         return null;
     }
 
     public void render() {
         GL30.glEnable(GL30.GL_DEPTH_TEST);
-        GL30.glBindVertexArray(vaoID);
-        GL30.glEnableVertexAttribArray(0);
-
-        GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, vboID);
-        GL30.glBufferData(GL30.GL_ARRAY_BUFFER, vertices, GL30.GL_STATIC_DRAW);
-
-        GL30.glBindBuffer(GL30.GL_ELEMENT_ARRAY_BUFFER, iboID);
-        GL30.glBufferData(GL30.GL_ELEMENT_ARRAY_BUFFER, indices, GL30.GL_STATIC_DRAW);
-        GL30.glDrawElements(GL30.GL_TRIANGLES, indices.length, GL30.GL_UNSIGNED_INT, 0);
-        GL30.glDisable(GL30.GL_DEPTH_TEST);
         if (Settings.isDebug()) {
             GL30.glPolygonMode(GL30.GL_FRONT_AND_BACK, GL30.GL_LINE);
-        } else {
-            GL30.glPolygonMode(GL30.GL_FRONT_AND_BACK, GL30.GL_FILL);
         }
+        GL30.glBindTexture(GL30.GL_TEXTURE_2D, texture.getTextureID());
+        GL30.glBindVertexArray(vaoID);
+        GL30.glDrawArrays(GL30.GL_TRIANGLES, 0, vertices.length / 8);
+        GL30.glDisable(GL30.GL_DEPTH_TEST);
+        GL30.glPolygonMode(GL30.GL_FRONT_AND_BACK, GL30.GL_FILL);
     }
 
     public void cleanup() {
         GL30.glDeleteVertexArrays(vaoID);
         GL30.glDeleteBuffers(vboID);
-        GL30.glDeleteBuffers(iboID);
     }
 }

@@ -47,16 +47,17 @@ dependencies {
 	implementation "org.joml:joml:1.10.5"
 	implementation "org.lwjglx:lwjgl3-awt:0.1.8"
 	implementation "com.code-disaster.steamworks4j:steamworks4j-server:1.9.0"
+	implementation group: 'org.l33tlabs.twl', name: 'pngdecoder', version: '1.0'
 }
 
 application {
     // Define the main class for the application.
-    mainClass = 'com.cemi.timetravelingheroes.TimeTravelingHeroes'
+    mainClass = 'com.cemi.game.Game'
 }
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.cemi.timetravelingheroes.TimeTravelingHeroes`'
+        attributes 'Main-Class': 'com.cemi.game.Game`'
     }
 }
 

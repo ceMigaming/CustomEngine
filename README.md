@@ -1,1 +1,1 @@
-# roguespores
+Custom rendering engine based on LWJGL.
